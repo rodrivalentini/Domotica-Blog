@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block titulo %}Mi perfil — DomoticAR{% endblock %}
+{% block contenido %}
+    <h1>Mi perfil</h1>
+    <div class="perfil">
+        {% if user.perfil.avatar %}
+            <img class="avatar" src="{{ user.perfil.avatar.url }}" alt="Avatar de {{ user.username }}">
+        {% endif %}
+        <div>
+            <p><strong>Usuario:</strong> {{ user.username }}</p>
+            <p><strong>Email:</strong> {{ user.email }}</p>
+            <p><strong>Bio:</strong> {{ user.perfil.bio|default:"(sin completar)" }}</p>
+            <a class="boton" href="{% url 'editar_perfil' %}">Editar perfil</a>
+        </div>
+    </div>
+
+    <h2>Mis posts</h2>
+    <ul>
+        {% for post in mis_posts %}
+            <li><a href="{{ post.get_absolute_url }}">{{ post.titulo }}</a> · {{ post.fecha_creacion|date:"d/m/Y" }}</li>
+        {% empty %}
+            <li>Todavía no publicaste nada. <a href="{% url 'crear_post' %}">Escribí tu primer post</a>.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

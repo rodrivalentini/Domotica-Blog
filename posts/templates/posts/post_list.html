@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block titulo %}{% if categoria_actual %}{{ categoria_actual.nombre }}{% else %}Blog{% endif %} — DomoticAR{% endblock %}
+{% block contenido %}
+    {% if categoria_actual %}
+        <h1>Categoría: {{ categoria_actual.nombre }}</h1>
+    {% else %}
+        <section class="hero">
+            <h1>Domotic<span class="acento">AR</span> Blog</h1>
+            <p>Automatización del hogar, sensores, IoT y proyectos DIY.</p>
+        </section>
+        <h2>Últimos posts</h2>
+    {% endif %}
+
+    <div class="categorias">
+        <a class="etiqueta {% if not categoria_actual %}activa{% endif %}" href="{% url 'home' %}">Todas</a>
+        {% for categoria in categorias %}
+            <a class="etiqueta {% if categoria_actual == categoria %}activa{% endif %}" href="{{ categoria.get_absolute_url }}">{{ categoria.nombre }}</a>
+        {% endfor %}
+    </div>
+
+    <div class="grilla">
+        {% for post in posts %}
+            {% include "posts/_tarjeta_post.html" %}
+        {% empty %}
+            <p>Todavía no hay posts publicados.
+                {% if user.is_authenticated %}<a href="{% url 'crear_post' %}">Creá el primero</a>.{% endif %}
+            </p>
+        {% endfor %}
+    </div>
+    {% include "posts/_paginacion.html" %}
+{% endblock %}

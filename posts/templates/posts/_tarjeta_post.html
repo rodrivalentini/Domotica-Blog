@@ -1,0 +1,14 @@
+<article class="tarjeta">
+    {% if post.imagen %}
+        <img src="{{ post.imagen.url }}" alt="Imagen de {{ post.titulo }}">
+    {% endif %}
+    <div class="tarjeta-cuerpo">
+        {% if post.categoria %}
+            <a class="etiqueta" href="{{ post.categoria.get_absolute_url }}">{{ post.categoria.nombre }}</a>
+        {% endif %}
+        <h2><a href="{{ post.get_absolute_url }}">{{ post.titulo }}</a></h2>
+        <p class="meta">Por {{ post.autor.username }} · {{ post.fecha_creacion|date:"d/m/Y" }}</p>
+        <p>{{ post.contenido|truncatewords:28 }}</p>
+        <a class="boton" href="{{ post.get_absolute_url }}">Leer más</a>
+    </div>
+</article>

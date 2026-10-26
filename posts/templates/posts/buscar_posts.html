@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block titulo %}Buscar — DomoticAR{% endblock %}
+{% block contenido %}
+    <h1>Buscar posts</h1>
+    <form method="get" class="form-busqueda">
+        <input type="text" name="q" value="{{ query }}" placeholder="Buscar por título o contenido...">
+        <button class="boton" type="submit">Buscar</button>
+    </form>
+
+    {% if query %}
+        <p class="meta">Resultados para "{{ query }}": {{ paginator.count }}</p>
+        <div class="grilla">
+            {% for post in posts %}
+                {% include "posts/_tarjeta_post.html" %}
+            {% empty %}
+                <p>No se encontraron posts que coincidan con "{{ query }}".</p>
+            {% endfor %}
+        </div>
+        {% include "posts/_paginacion.html" %}
+    {% endif %}
+{% endblock %}

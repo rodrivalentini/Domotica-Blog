@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block titulo %}DomoticAR — Blog de domótica{% endblock %}</title>
+    <link rel="icon" href="{% static 'img/logo.png' %}" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+</head>
+<body>
+    <header class="navbar">
+        <a class="marca" href="{% url 'home' %}">
+            <img src="{% static 'img/logo.png' %}" alt="Logo de DomoticAR">
+            <span>Domotic<span class="brand-ar">AR</span></span>
+        </a>
+        <nav>
+            <a href="{% url 'home' %}">Posts</a>
+            <a href="{% url 'buscar_posts' %}">Buscar</a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'crear_post' %}">Nuevo post</a>
+                <a href="{% url 'perfil' %}">
+                    {% if user.perfil.avatar %}
+                        <img class="avatar-mini" src="{{ user.perfil.avatar.url }}" alt="Avatar">
+                    {% endif %}
+                    {{ user.username }}
+                </a>
+                <form class="form-inline" action="{% url 'logout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="link-boton">Cerrar sesión</button>
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}">Iniciar sesión</a>
+                <a href="{% url 'registro' %}">Registrarme</a>
+            {% endif %}
+        </nav>
+    </header>
+
+    <main class="contenedor">
+        {% if messages %}
+            <ul class="mensajes">
+                {% for message in messages %}
+                    <li class="mensaje {{ message.tags }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        {% block contenido %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <img src="{% static 'img/logo.png' %}" alt="Logo de DomoticAR">
+        <p>DomoticAR · Blog de domótica · Proyecto final de Python · Coderhouse</p>
+    </footer>
+</body>
+</html>
